@@ -1,1 +1,12 @@
 /plugins
+test-project/
+node_modules/
+
+# Temporary files
+*.html
+extract-markdown.js
+fetch-dynamic-content.js
+flutter-animation-guide.md
+codedeck-flutter-animation.html
+hello.txt
+Helloworld.txt
