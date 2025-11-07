@@ -575,9 +575,199 @@ WebFetch는 다음 요소를 마크다운으로 변환합니다:
 4. **저작권 주의**: 웹페이지 내용의 저작권을 존중
 5. **개인적 아카이빙**: 주로 개인적인 참고 자료로 사용
 
+## Dynamic Content Handling (동적 콘텐츠 처리)
+
+### 문제: JavaScript 렌더링 페이지
+
+WebFetch는 정적 HTML만 가져오므로 React, Vue, Next.js 등 JavaScript로 렌더링되는 페이지는 빈 내용이 반환될 수 있습니다.
+
+**증상:**
+- 변환된 마크다운이 거의 비어있음
+- "Loading..." 같은 플레이스홀더만 보임
+- 핵심 콘텐츠가 누락됨
+
+### 해결책: Playwright 폴백
+
+WebFetch로 가져온 내용이 비어있거나 불충분하면, **AskUserQuestion**을 사용하여 사용자에게 Playwright 사용 여부를 물어봅니다.
+
+#### Step 1: WebFetch 결과 검증
+
+```python
+# WebFetch로 가져온 마크다운 내용 확인
+if len(markdown_content.strip()) < 500:  # 너무 짧으면
+    # 동적 콘텐츠일 가능성 높음
+```
+
+#### Step 2: 사용자에게 물어보기
+
+**AskUserQuestion 사용:**
+
+```javascript
+AskUserQuestion {
+  questions: [
+    {
+      question: "이 페이지는 동적 콘텐츠(JavaScript)를 사용하는 것 같습니다. Playwright를 실행해서 브라우저로 데이터를 가져올까요?",
+      header: "Playwright",
+      multiSelect: false,
+      options: [
+        {
+          label: "Yes, Playwright로 재시도",
+          description: "Chromium 브라우저를 실행해서 JavaScript 렌더링 후 콘텐츠 가져오기 (느림, 정확함)"
+        },
+        {
+          label: "No, 현재 내용만 저장",
+          description: "WebFetch 결과만 저장 (빠름, 불완전할 수 있음)"
+        }
+      ]
+    }
+  ]
+}
+```
+
+#### Step 3-A: MCP Playwright 사용 (권장 ⭐)
+
+**사전 준비:** MCP Playwright 서버가 설치되어 있어야 합니다.
+
+```bash
+# 최초 1회만 설치
+npx @modelcontextprotocol/server-playwright
+```
+
+**스킬에서 사용:**
+
+```javascript
+// 1. 페이지 이동
+mcp__playwright__navigate({
+  url: "https://example.com"
+})
+
+// 2. JavaScript 렌더링 대기
+mcp__playwright__waitForLoadState({
+  state: "networkidle"
+})
+
+// 3. HTML 콘텐츠 가져오기
+const htmlContent = mcp__playwright__getContent()
+
+// 4. 마크다운으로 변환 (WebFetch 프롬프트 재사용)
+// htmlContent를 마크다운으로 변환하는 로직
+```
+
+#### Step 3-B: Node Playwright 사용 (대안)
+
+MCP Playwright가 없는 경우 Node.js로 직접 실행:
+
+```bash
+# Playwright 스크립트 실행
+node << 'EOF'
+const playwright = require('playwright');
+
+(async () => {
+  const browser = await playwright.chromium.launch({ headless: true });
+  const page = await browser.newPage();
+
+  console.log('⏳ 페이지 로딩 중...');
+  await page.goto('https://example.com', { waitUntil: 'networkidle' });
+
+  console.log('⏳ JavaScript 렌더링 대기 중...');
+  await page.waitForTimeout(3000); // 3초 대기
+
+  const content = await page.content();
+  console.log(content);
+
+  await browser.close();
+})();
+EOF
+```
+
+**출력을 파일로 저장:**
+```bash
+# HTML을 임시 파일로 저장
+node playwright-script.js > temp.html
+
+# 이제 이 HTML을 마크다운으로 변환
+# (WebFetch 대신 직접 변환 로직 사용)
+```
+
+#### Step 4: 변환 및 저장
+
+Playwright로 가져온 HTML을 마크다운으로 변환합니다.
+
+**Option A: WebFetch 프롬프트 재사용**
+
+Playwright로 가져온 전체 HTML을 WebFetch 프롬프트에 넣어 마크다운으로 변환합니다.
+
+**Option B: 직접 파싱**
+
+HTML → 마크다운 변환 라이브러리 사용 (예: turndown, html-to-markdown)
+
+### 워크플로우 요약
+
+```
+1. WebFetch로 시도 (빠름)
+   ↓
+2. 결과 검증 (내용이 충분한가?)
+   ↓ NO
+3. AskUserQuestion (Playwright 사용할까요?)
+   ↓ YES
+4. Playwright로 재시도
+   ├─ MCP Playwright (권장) 또는
+   └─ Node Playwright (대안)
+   ↓
+5. 마크다운 변환 및 저장
+```
+
+### MCP Playwright vs Node Playwright 비교
+
+| 항목 | MCP Playwright ⭐ | Node Playwright |
+|------|------------------|-----------------|
+| **설치** | MCP 서버 설치 필요 | `npm install playwright` |
+| **호출 방식** | MCP 도구 호출 | Bash 명령어 실행 |
+| **세션 관리** | 자동 | 수동 (스크립트 작성) |
+| **에러 핸들링** | 깔끔함 | 복잡함 |
+| **Claude Code 통합** | 네이티브 지원 | 간접 실행 |
+| **추천도** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
+
+### 실전 예제
+
+**시나리오: React 공식 문서 변환**
+
+```
+User: https://react.dev/reference/react/useState 마크다운으로 변환해줘
+
+Claude: [WebFetch 시도]
+Claude: ⚠️ 이 페이지는 JavaScript로 렌더링되는 것 같습니다.
+        내용이 거의 비어있네요.
+
+[AskUserQuestion 호출]
+
+User: Yes, Playwright로 재시도
+
+Claude: ⏳ Playwright로 페이지 로딩 중...
+Claude: ✅ JavaScript 렌더링 완료
+Claude: ✅ 마크다운 변환 완료
+
+📄 파일: useState.md
+📍 경로: /path/to/useState.md
+📊 크기: 약 5,234 글자 (전체 콘텐츠 포함)
+```
+
+### 추가 옵션: 자동 감지 모드
+
+고급 사용자를 위해 `--auto-playwright` 플래그를 지원할 수 있습니다:
+
+```
+User: https://react.dev/reference/react/useState 마크다운으로 변환해줘 (자동으로 Playwright 사용해도 돼)
+
+Claude: [WebFetch 시도]
+Claude: [자동으로 Playwright 폴백]
+Claude: ✅ 마크다운 변환 완료
+```
+
 ## Tips
 
 - **긴 문서**: 매우 긴 웹페이지는 요약이 포함될 수 있습니다
-- **동적 콘텐츠**: JavaScript로 렌더링되는 콘텐츠는 포함되지 않을 수 있습니다
+- **동적 콘텐츠**: JavaScript로 렌더링되는 콘텐츠는 Playwright로 해결 가능 ⭐ NEW
 - **이미지**: 이미지는 원본 URL 링크로 포함됩니다 (다운로드되지 않음)
 - **재변환**: 같은 URL을 15분 내에 다시 요청하면 캐시된 버전을 사용합니다
+- **MCP Playwright**: 동적 콘텐츠가 많은 경우 MCP Playwright 서버 설치 권장

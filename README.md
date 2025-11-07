@@ -314,6 +314,10 @@ python auto_generator.py \
   - **일반 모드**: 읽기 좋은 마크다운 변환
   - **AI 최적화 모드**: AI 컨텍스트용 구조화된 형태 (YAML 프론트매터, 핵심 요약 포함)
   - **듀얼 모드**: 원본 + AI 최적화 버전 2개 파일 동시 생성 ⭐
+- **동적 콘텐츠 처리 ⭐ NEW**
+  - WebFetch로 가져오지 못한 JavaScript 렌더링 페이지 자동 감지
+  - Playwright로 브라우저 실행하여 동적 콘텐츠 가져오기
+  - MCP Playwright 또는 Node Playwright 지원
 - 여러 URL 일괄 변환
 - 특정 섹션만 추출
 - 마크다운 포맷 커스터마이징
@@ -351,11 +355,25 @@ AI가 읽기 좋게 변환해줘
 
 **사용 예시:**
 ```
+# 듀얼 모드
 User: https://docs.python.org/3/tutorial 원본이랑 AI 최적화 버전 둘 다 만들어줘
 
 Claude: 듀얼 모드로 변환하겠습니다.
 - python-tutorial.md (원본 - 사람이 읽기 좋음)
 - python-tutorial.context.md (AI 최적화 - 컨텍스트용)
+
+# 동적 콘텐츠 (NEW)
+User: https://www.codedeck.kr/card-news/xxx 마크다운으로 변환해줘
+
+Claude: [WebFetch 시도]
+        ⚠️ 내용이 거의 비어있네요. JavaScript 렌더링 페이지인 것 같습니다.
+        Playwright로 재시도할까요?
+
+User: Yes
+
+Claude: ⏳ Playwright로 페이지 로딩...
+        ✅ JavaScript 렌더링 완료
+        ✅ 마크다운 변환 완료 (1,442줄)
 ```
 
 ## 스킬 사용 방법
