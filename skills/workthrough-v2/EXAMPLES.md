@@ -77,9 +77,9 @@ Exit code: 0
 - [x] No layout shift during interaction
 - [x] Responsive behavior works as expected
 
-## Next Steps
-- Consider adding tests for layout components
-- Document the layout pattern for future pages
+## 다음 단계
+- 레이아웃 컴포넌트 테스트 추가
+- 향후 페이지를 위한 레이아웃 패턴 문서화
 ```
 
 ## Example 2: Feature Implementation
@@ -211,11 +211,11 @@ NEXTAUTH_URL="http://localhost:3000"
 NEXTAUTH_SECRET="generated-secret"
 ```
 
-## Next Steps
-- [ ] Add email/password provider option
-- [ ] Implement role-based access control
-- [ ] Add user profile edit functionality
-- [ ] Set up email verification flow
+## 다음 단계
+- [ ] 이메일/비밀번호 로그인 기능 추가
+- [ ] 역할 기반 접근 제어 구현
+- [ ] 사용자 프로필 편집 기능 추가
+- [ ] 이메일 인증 플로우 설정
 
 ## References
 - [NextAuth.js Documentation](https://next-auth.js.org/)
@@ -368,10 +368,10 @@ Tests:       89 passed, 89 total
 - Maintained same API surface where possible for easier migration
 - All component tests updated and passing
 
-## Next Steps
-- [x] Update team documentation on state management patterns
-- [ ] Consider adding Immer middleware for complex nested updates
-- [ ] Explore time-travel debugging capabilities
+## 다음 단계
+- [x] 상태 관리 패턴 팀 문서 업데이트
+- [ ] 복잡한 중첩 업데이트를 위한 Immer 미들웨어 추가 고려
+- [ ] 타임 트래블 디버깅 기능 탐색
 
 ## References
 - [Zustand Documentation](https://github.com/pmndrs/zustand)
@@ -386,7 +386,7 @@ Tests:       89 passed, 89 total
 3. **Code Examples**: Show actual implementation
 4. **Verification**: Prove it works with output
 5. **Metrics**: When relevant (performance, before/after)
-6. **Next Steps**: What remains to be done
+6. **다음 단계**: 다음에 해야 할 작업
 
 ### ❌ Avoid:
 1. Vague descriptions: "Fixed some bugs"

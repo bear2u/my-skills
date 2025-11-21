@@ -577,7 +577,7 @@ friendly abstract shapes, approachable modern style, soft blue and mint colors, 
 - 복잡한 요소는 모서리 배치
 - 한국어 주제 지원 (영어 프롬프트 생성)
 
-### 14. [Workthrough](./skills/workthrough/)
+### 14. [Workthrough](./plugins/skills/workthrough/)
 모든 개발 및 수정 작업을 자동으로 문서화하여 구조화된 워크스루 형식으로 저장하는 스킬입니다.
 
 **주요 기능:**
@@ -627,10 +627,10 @@ workthrough/bugfix/issue-123.md
 
 **예제:**
 - [test.md](./workthrougt-test/test.md) - 실제 워크스루 예제
-- [TEMPLATE.md](./.claude/skills/workthrough/TEMPLATE.md) - 빈 템플릿
-- [EXAMPLES.md](./.claude/skills/workthrough/EXAMPLES.md) - 다양한 시나리오 예제
+- [TEMPLATE.md](./plugins/skills/workthrough/TEMPLATE.md) - 빈 템플릿
+- [EXAMPLES.md](./plugins/skills/workthrough/EXAMPLES.md) - 다양한 시나리오 예제
 
-### 15. [Workthrough V2](./skills/workthrough-v2/) 🆕
+### 15. [Workthrough V2](./plugins/skills/workthrough-v2/) 🆕
 Workthrough 스킬의 향상된 버전으로, 문서화와 함께 **VitePress 기반 문서 사이트를 자동으로 빌드**하여 제공합니다.
 
 **V2 새로운 기능:**
@@ -858,60 +858,45 @@ workthrough-v2             # 개발 작업 자동 문서화 + VitePress (5173 �
 
 ```
 my-skills-hub/
-├── skills/
-│   ├── code-changelog/          # 코드 변경사항 자동 문서화
-│   │   ├── skill.md             # 스킬 설명
-│   │   └── ...                  # 스킬 파일들
-│   ├── meta-prompt-generator/   # 메타 프롬프트 생성기
-│   │   ├── skill.md
-│   │   └── ...
-│   ├── prompt-enhancer/         # 프롬프트 향상기
-│   │   ├── skill.md
-│   │   └── ...
-│   ├── flutter-init/            # Flutter 프로젝트 생성
-│   │   ├── skill.md
-│   │   └── ...
-│   ├── nextjs15-init/           # Next.js 15 프로젝트 생성
-│   │   ├── skill.md
-│   │   └── ...
-│   ├── codex/                   # Codex CLI 코드 리뷰/분석
-│   │   └── skill.md
-│   ├── codex-claude-loop/       # Claude + Codex 이중 AI 엔지니어링 루프
-│   │   ├── SKILL.md
-│   │   └── README.md
-│   ├── landing-page-guide-v2/   # 아름다운 디자인 + 높은 전환율 랜딩페이지 가이드
-│   │   ├── SKILL.md
-│   │   └── references/
-│   │       ├── 11-essential-elements.md
-│   │       └── component-examples.md
-│   ├── card-news-generator/     # 카드 뉴스 자동 생성
-│   │   ├── SKILL.md
-│   │   └── ...
-│   ├── web-to-markdown/         # 웹페이지 마크다운 변환
-│   │   ├── SKILL.md
-│   │   └── ...
-│   ├── code-prompt-coach/       # Claude Code 세션 로그 분석
-│   │   ├── SKILL.md
-│   │   └── ...
-│   ├── codex-claude-cursor-loop/  # Claude + Codex + Cursor 3중 AI 루프
-│   │   ├── SKILL.md
-│   │   └── ...
-│   ├── midjourney-cardnews-bg/  # Midjourney 카드 뉴스 배경 프롬프트
-│   │   ├── SKILL.md
-│   │   └── ...
-│   ├── workthrough/             # 개발 작업 자동 문서화
-│   │   ├── SKILL.md
-│   │   ├── README.md
-│   │   ├── TEMPLATE.md
-│   │   ├── EXAMPLES.md
-│   │   ├── QUICKSTART.md
-│   │   └── LICENSE.txt
-│   └── workthrough-v2/          # 개발 작업 자동 문서화 + VitePress
-│       ├── SKILL.md
-│       ├── README.md
-│       ├── .vitepress/
-│       │   └── config.ts
-│       └── package.json
+├── plugins/                      # 플러그인 마켓플레이스
+│   ├── .claude-plugin/           # 플러그인 설정
+│   ├── skills/                   # 모든 스킬들
+│   │   ├── code-changelog/       # 코드 변경사항 자동 문서화
+│   │   ├── meta-prompt-generator/ # 메타 프롬프트 생성기
+│   │   ├── prompt-enhancer/      # 프롬프트 향상기
+│   │   ├── flutter-init/         # Flutter 프로젝트 생성
+│   │   ├── nextjs15-init/        # Next.js 15 프로젝트 생성
+│   │   ├── codex/                # Codex CLI 코드 리뷰/분석
+│   │   ├── codex-claude-loop/    # Claude + Codex 이중 AI 루프
+│   │   ├── codex-claude-cursor-loop/ # Claude + Codex + Cursor 3중 AI 루프
+│   │   ├── frontend-design/      # 프론트엔드 디자인 생성
+│   │   ├── landing-page-guide/   # 랜딩페이지 가이드
+│   │   ├── landing-page-guide-v2/ # 랜딩페이지 가이드 V2
+│   │   │   ├── SKILL.md
+│   │   │   └── references/
+│   │   │       ├── 11-essential-elements.md
+│   │   │       └── component-examples.md
+│   │   ├── card-news-generator/  # 카드 뉴스 자동 생성
+│   │   ├── card-news-generator-v2/ # 카드 뉴스 V2 (배경 이미지)
+│   │   ├── web-to-markdown/      # 웹페이지 마크다운 변환
+│   │   ├── code-prompt-coach/    # Claude Code 세션 로그 분석
+│   │   ├── midjourney-cardnews-bg/ # Midjourney 카드 뉴스 배경
+│   │   ├── workthrough/          # 개발 작업 자동 문서화
+│   │   │   ├── SKILL.md
+│   │   │   ├── README.md
+│   │   │   ├── TEMPLATE.md
+│   │   │   ├── EXAMPLES.md
+│   │   │   ├── QUICKSTART.md
+│   │   │   └── LICENSE.txt
+│   │   └── workthrough-v2/       # 개발 작업 자동 문서화 + VitePress
+│   │       ├── SKILL.md
+│   │       ├── README.md
+│   │       ├── .vitepress/
+│   │       │   └── config.ts
+│   │       └── package.json
+│   └── README.md                 # 플러그인 마켓플레이스 문서
+├── .claude/                      # Claude Code 설정
+│   └── skills/                   # 로컬 스킬 (deprecated, plugins/skills 사용 권장)
 └── README.md                     # 이 파일
 ```
 
@@ -919,33 +904,34 @@ my-skills-hub/
 
 각 스킬 폴더의 `skill.md` 파일에서 더 자세한 정보를 확인할 수 있습니다:
 
-- [Code Changelog 상세 정보](./skills/code-changelog/skill.md)
-- [Meta Prompt Generator 상세 정보](./skills/meta-prompt-generator/skill.md)
-- [Prompt Enhancer 상세 정보](./skills/prompt-enhancer/skill.md)
-- [Flutter Init 상세 정보](./skills/flutter-init/skill.md)
-- [Next.js 15 Init 상세 정보](./skills/nextjs15-init/skill.md)
-- [Codex 상세 정보](./skills/codex/skill.md)
-- [Codex-Claude Loop 상세 정보](./skills/codex-claude-loop/SKILL.md)
-- [Codex-Claude Loop 사용법](./skills/codex-claude-loop/README.md)
-- [Landing Page Guide V2 상세 정보](./skills/landing-page-guide-v2/SKILL.md)
-- [Card News Generator 상세 정보](./skills/card-news-generator/SKILL.md)
-- [Card News Generator V2 상세 정보](./skills/card-news-generator/V2_FEATURES.md)
-- [Web to Markdown 상세 정보](./.claude/skills/web-to-markdown/SKILL.md)
-- [Code Prompt Coach 상세 정보](./skills/code-prompt-coach/SKILL.md)
-- [Codex-Claude-Cursor Loop 상세 정보](./skills/codex-claude-cursor-loop/SKILL.md)
-- [Midjourney Card News BG 상세 정보](./skills/midjourney-cardnews-bg/SKILL.md)
-- [Workthrough 상세 정보](./.claude/skills/workthrough/SKILL.md)
-- [Workthrough 빠른 시작](./.claude/skills/workthrough/QUICKSTART.md)
-- [Workthrough 예제](./.claude/skills/workthrough/EXAMPLES.md)
-- [Workthrough V2 상세 정보](./skills/workthrough-v2/SKILL.md)
-- [Workthrough V2 사용법](./skills/workthrough-v2/README.md)
+- [Code Changelog 상세 정보](./plugins/skills/code-changelog/skill.md)
+- [Meta Prompt Generator 상세 정보](./plugins/skills/meta-prompt-generator/skill.md)
+- [Prompt Enhancer 상세 정보](./plugins/skills/prompt-enhancer/skill.md)
+- [Flutter Init 상세 정보](./plugins/skills/flutter-init/skill.md)
+- [Next.js 15 Init 상세 정보](./plugins/skills/nextjs15-init/skill.md)
+- [Codex 상세 정보](./plugins/skills/codex/skill.md)
+- [Codex-Claude Loop 상세 정보](./plugins/skills/codex-claude-loop/SKILL.md)
+- [Codex-Claude Loop 사용법](./plugins/skills/codex-claude-loop/README.md)
+- [Frontend Design 상세 정보](./plugins/skills/frontend-design/SKILL.md)
+- [Landing Page Guide V2 상세 정보](./plugins/skills/landing-page-guide-v2/SKILL.md)
+- [Card News Generator 상세 정보](./plugins/skills/card-news-generator/SKILL.md)
+- [Card News Generator V2 상세 정보](./plugins/skills/card-news-generator-v2/V2_FEATURES.md)
+- [Web to Markdown 상세 정보](./plugins/skills/web-to-markdown/SKILL.md)
+- [Code Prompt Coach 상세 정보](./plugins/skills/code-prompt-coach/SKILL.md)
+- [Codex-Claude-Cursor Loop 상세 정보](./plugins/skills/codex-claude-cursor-loop/SKILL.md)
+- [Midjourney Card News BG 상세 정보](./plugins/skills/midjourney-cardnews-bg/SKILL.md)
+- [Workthrough 상세 정보](./plugins/skills/workthrough/SKILL.md)
+- [Workthrough 빠른 시작](./plugins/skills/workthrough/QUICKSTART.md)
+- [Workthrough 예제](./plugins/skills/workthrough/EXAMPLES.md)
+- [Workthrough V2 상세 정보](./plugins/skills/workthrough-v2/SKILL.md)
+- [Workthrough V2 사용법](./plugins/skills/workthrough-v2/README.md)
 
 ## 기여
 
 새로운 스킬을 추가하거나 기존 스킬을 개선하고 싶으시다면:
 
-1. `skills/` 폴더에 새로운 스킬 디렉토리 생성
-2. `skill.md` 파일 작성 (스킬 메타데이터 및 설명)
+1. `plugins/skills/` 폴더에 새로운 스킬 디렉토리 생성
+2. `SKILL.md` 파일 작성 (스킬 메타데이터 및 설명)
 3. 필요한 파일들 추가
 4. README.md에 스킬 정보 추가
 
@@ -976,13 +962,24 @@ MIT License
   - 반응형 디자인 (모바일/태블릿/데스크톱)
 
 #### Changed
+- **프로젝트 구조**: skills 폴더를 plugins/skills로 통합 🔄
+  - `skills/` → `plugins/skills/`로 모든 스킬 이동
+  - 플러그인 마켓플레이스 중앙화
+  - `.claude/skills/`는 deprecated, plugins/skills 사용 권장
+  - 총 18개 스킬 통합 관리
 - **README.md**: workthrough & workthrough-v2 스킬 추가
   - 빠른 설치 테이블에 workthrough, workthrough-v2 추가
   - 스킬 목록(14, 15번)에 상세 설명 추가
   - V1 vs V2 비교표 추가
   - 마켓플레이스 설치 명령어 추가
   - 실행 방법 및 폴더 구조 업데이트
-  - 스킬별 상세 정보 링크 추가
+  - 모든 경로를 plugins/skills로 변경
+  - 스킬별 상세 정보 링크 업데이트
+- **plugins/README.md**: 신규 스킬 추가
+  - frontend-design, landing-page-guide-v2 추가
+  - code-prompt-coach, codex-claude-cursor-loop 추가
+  - midjourney-cardnews-bg 추가
+  - workthrough, workthrough-v2 추가
 
 ### [1.6.0] - 2025-11-12
 
