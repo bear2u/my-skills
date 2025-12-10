@@ -40,6 +40,7 @@ Claude Code를 위한 커스텀 스킬 모음입니다. 개발 생산성을 높�
 | **Midjourney Card News BG** | 카드 뉴스용 Midjourney 배경 이미지 프롬프트 생성 | `/plugin marketplace install suji-father-marketplace@midjourney-cardnews-bg` |
 | **Workthrough** | 모든 개발 및 수정 작업을 자동으로 문서화하여 워크스루 형식으로 저장 | `/plugin marketplace install suji-father-marketplace@workthrough` |
 | **Workthrough V2** | 워크스루 문서화 + VitePress 빌드로 5173 포트에서 문서 서비스 제공 | `/plugin marketplace install suji-father-marketplace@workthrough-v2` |
+| **Gemini Logo Remover** | OpenCV inpainting으로 Gemini 로고/워터마크 제거 | `/plugin marketplace install suji-father-marketplace@gemini-logo-remover` |
 
 ### 마켓플레이스 추가
 
@@ -719,6 +720,45 @@ npm run docs:preview
 - 기본: http://localhost:5173
 - 커스터마이징: `.vitepress/config.ts`에서 변경 가능
 
+### 16. [Gemini Logo Remover](./plugins/skills/gemini-logo-remover/) 🆕
+OpenCV inpainting을 사용하여 AI 생성 이미지에서 Gemini 로고 및 워터마크를 제거하는 스킬입니다.
+
+**주요 기능:**
+- OpenCV inpainting 기반 로고 제거
+- 좌표 기반 영역 지정 제거
+- 코너 기반 자동 제거 (top_left, top_right, bottom_left, bottom_right)
+- 비율 기반 영역 계산 (w_ratio, h_ratio)
+- TELEA 알고리즘으로 자연스러운 복원
+
+**지원 이미지 형식:**
+- PNG, JPG, JPEG, WebP, BMP
+
+**제거 방식:**
+```python
+# 1. 좌표 기반 제거
+remove_region(input_path, output_path, x1=700, y1=650, x2=800, y2=720)
+
+# 2. 코너 기반 제거 (권장)
+remove_corner_logo(input_path, output_path, corner='bottom_right', w_ratio=0.1, h_ratio=0.1)
+```
+
+**사용 시나리오:**
+- Gemini 생성 이미지에서 별 로고 제거
+- AI 워터마크 제거
+- 이미지 모서리 로고 정리
+- 깔끔한 이미지 후처리
+
+**설치 요구사항:**
+```bash
+pip install opencv-python numpy pillow --break-system-packages
+```
+
+**특징:**
+- Gemini 로고는 보통 우하단에 위치
+- 균일한 배경에서 최상의 결과
+- 작은 영역 제거에 최적화
+- 자동 마스크 생성 및 inpainting
+
 ## 스킬 사용 방법
 
 ### 방법 1: 마켓플레이스를 통한 설치 (권장)
@@ -785,6 +825,9 @@ npm run docs:preview
 
 # 워크스루 자동 문서화 V2 (VitePress)
 /plugin marketplace install suji-father-marketplace@workthrough-v2
+
+# Gemini 로고 제거기
+/plugin marketplace install suji-father-marketplace@gemini-logo-remover
 ```
 
 #### 4. 설치된 플러그인 확인
@@ -852,6 +895,7 @@ code-prompt-coach          # Claude Code 세션 로그 분석
 midjourney-cardnews-bg     # Midjourney 카드 뉴스 배경 프롬프트 생성
 workthrough                # 개발 작업 자동 문서화
 workthrough-v2             # 개발 작업 자동 문서화 + VitePress (5173 포트)
+gemini-logo-remover        # Gemini 로고/워터마크 제거
 ```
 
 ## 폴더 구조
@@ -888,12 +932,14 @@ my-skills-hub/
 │   │   │   ├── EXAMPLES.md
 │   │   │   ├── QUICKSTART.md
 │   │   │   └── LICENSE.txt
-│   │   └── workthrough-v2/       # 개발 작업 자동 문서화 + VitePress
-│   │       ├── SKILL.md
-│   │       ├── README.md
-│   │       ├── .vitepress/
-│   │       │   └── config.ts
-│   │       └── package.json
+│   │   ├── workthrough-v2/       # 개발 작업 자동 문서화 + VitePress
+│   │   │   ├── SKILL.md
+│   │   │   ├── README.md
+│   │   │   ├── .vitepress/
+│   │   │   │   └── config.ts
+│   │   │   └── package.json
+│   │   └── gemini-logo-remover/  # Gemini 로고/워터마크 제거
+│   │       └── SKILL.md
 │   └── README.md                 # 플러그인 마켓플레이스 문서
 ├── .claude/                      # Claude Code 설정
 │   └── skills/                   # 로컬 스킬 (deprecated, plugins/skills 사용 권장)
@@ -925,6 +971,7 @@ my-skills-hub/
 - [Workthrough 예제](./plugins/skills/workthrough/EXAMPLES.md)
 - [Workthrough V2 상세 정보](./plugins/skills/workthrough-v2/SKILL.md)
 - [Workthrough V2 사용법](./plugins/skills/workthrough-v2/README.md)
+- [Gemini Logo Remover 상세 정보](./plugins/skills/gemini-logo-remover/SKILL.md)
 
 ## 기여
 
@@ -940,6 +987,25 @@ my-skills-hub/
 MIT License
 
 ## Changelog
+
+### [1.8.0] - 2025-12-10
+
+#### Added
+- **gemini-logo-remover**: Gemini 로고 및 워터마크 제거 스킬 🆕
+  - OpenCV inpainting 기반 자연스러운 로고 제거
+  - 좌표 기반 영역 지정 제거
+  - 코너 기반 자동 제거 (top_left, top_right, bottom_left, bottom_right)
+  - 비율 기반 영역 계산 (w_ratio, h_ratio)
+  - TELEA 알고리즘으로 배경 복원
+  - PNG, JPG, JPEG, WebP, BMP 지원
+
+#### Changed
+- **README.md**: gemini-logo-remover 스킬 추가
+  - 빠른 설치 테이블에 추가
+  - 스킬 목록(16번)에 상세 설명 추가
+  - 마켓플레이스 설치 명령어 추가
+  - 실행 방법 및 폴더 구조 업데이트
+  - 스킬별 상세 정보 링크 추가
 
 ### [1.7.0] - 2025-11-19
 
