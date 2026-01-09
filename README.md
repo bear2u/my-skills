@@ -41,6 +41,7 @@ Claude Code를 위한 커스텀 스킬 모음입니다. 개발 생산성을 높�
 | **Workthrough** | 모든 개발 및 수정 작업을 자동으로 문서화하여 워크스루 형식으로 저장 | `/plugin marketplace install suji-father-marketplace@workthrough` |
 | **Workthrough V2** | 워크스루 문서화 + VitePress 빌드로 5173 포트에서 문서 서비스 제공 | `/plugin marketplace install suji-father-marketplace@workthrough-v2` |
 | **Gemini Logo Remover** | OpenCV inpainting으로 Gemini 로고/워터마크 제거 | `/plugin marketplace install suji-father-marketplace@gemini-logo-remover` |
+| **Design Prompt Generator V2** | AI 웹 개발 도구용 7단계 계층적 디자인 프롬프트 생성기 | `/plugin marketplace install suji-father-marketplace@design-prompt-generator-v2` |
 
 ### 마켓플레이스 추가
 
@@ -720,7 +721,40 @@ npm run docs:preview
 - 기본: http://localhost:5173
 - 커스터마이징: `.vitepress/config.ts`에서 변경 가능
 
-### 16. [Gemini Logo Remover](./plugins/skills/gemini-logo-remover/) 🆕
+### 17. [Design Prompt Generator V2](./skills/design-prompt-generator-v2/) 🆕
+AI 웹 개발 도구(Lovable, Cursor, Bolt)를 위한 7단계 계층적 디자인 프롬프트 생성기입니다.
+
+**7단계 프레임워크:**
+```
+Step 1: Domain Research      → 업종 UX 패턴, 경쟁사 인사이트
+Step 2: User Journey         → 핵심 사용자 흐름, 전환 포인트
+Step 3: Emotional Design     → 감성 키워드, 무드 컨셉
+Step 4: Identity & Goal      → 브랜드 정체성, 목표
+Step 5: Design System        → 컬러, 타이포, 컴포넌트
+Step 6: Component Specs      → 핵심 컴포넌트 상세 정의
+Step 7: Micro-interactions   → 애니메이션, 인터랙션 패턴
+```
+
+**주요 기능:**
+- 도메인별 UX 패턴 매트릭스 (Pet Services, SaaS, E-commerce 등 8개 도메인)
+- 감정 키워드 매트릭스 (Trust, Warmth, Energy 등 7가지 감정)
+- 완전한 디자인 시스템 템플릿 (10가지 컬러, 타이포, 스페이싱)
+- 마이크로 인터랙션 정의 (5가지 카테고리)
+
+**트리거 키워드:**
+- "디자인 프롬프트", "웹 디자인", "Lovable 프롬프트", "랜딩페이지 만들어줘"
+
+**사용 시나리오:**
+- Lovable, Cursor, Bolt 등 AI 웹 빌더용 프롬프트 생성
+- 도메인별 맞춤 디자인 프롬프트
+- 감성 디자인 기반 UI/UX 설계
+- 프로덕션 레디 디자인 시스템 구축
+
+**참고 자료:**
+- [SKILL.md](./skills/design-prompt-generator-v2/SKILL.md) - 전체 프레임워크 문서
+- [Sample](./skills/design-prompt-generator-v2/sample/) - 펫시터 서비스 예제
+
+### 18. [Gemini Logo Remover](./plugins/skills/gemini-logo-remover/) 🆕
 OpenCV inpainting을 사용하여 AI 생성 이미지에서 Gemini 로고 및 워터마크를 제거하는 스킬입니다.
 
 **주요 기능:**
@@ -828,6 +862,9 @@ pip install opencv-python numpy pillow --break-system-packages
 
 # Gemini 로고 제거기
 /plugin marketplace install suji-father-marketplace@gemini-logo-remover
+
+# 디자인 프롬프트 생성기 V2
+/plugin marketplace install suji-father-marketplace@design-prompt-generator-v2
 ```
 
 #### 4. 설치된 플러그인 확인
@@ -896,6 +933,7 @@ midjourney-cardnews-bg     # Midjourney 카드 뉴스 배경 프롬프트 생성
 workthrough                # 개발 작업 자동 문서화
 workthrough-v2             # 개발 작업 자동 문서화 + VitePress (5173 포트)
 gemini-logo-remover        # Gemini 로고/워터마크 제거
+design-prompt-generator-v2 # AI 웹 빌더용 디자인 프롬프트 생성
 ```
 
 ## 폴더 구조
@@ -938,8 +976,11 @@ my-skills-hub/
 │   │   │   ├── .vitepress/
 │   │   │   │   └── config.ts
 │   │   │   └── package.json
-│   │   └── gemini-logo-remover/  # Gemini 로고/워터마크 제거
-│   │       └── SKILL.md
+│   │   ├── gemini-logo-remover/  # Gemini 로고/워터마크 제거
+│   │   │   └── SKILL.md
+│   │   └── design-prompt-generator-v2/  # AI 웹 빌더용 디자인 프롬프트 생성기
+│   │       ├── SKILL.md
+│   │       └── sample/           # 펫시터 서비스 예제
 │   └── README.md                 # 플러그인 마켓플레이스 문서
 ├── .claude/                      # Claude Code 설정
 │   └── skills/                   # 로컬 스킬 (deprecated, plugins/skills 사용 권장)
@@ -972,6 +1013,8 @@ my-skills-hub/
 - [Workthrough V2 상세 정보](./plugins/skills/workthrough-v2/SKILL.md)
 - [Workthrough V2 사용법](./plugins/skills/workthrough-v2/README.md)
 - [Gemini Logo Remover 상세 정보](./plugins/skills/gemini-logo-remover/SKILL.md)
+- [Design Prompt Generator V2 상세 정보](./skills/design-prompt-generator-v2/SKILL.md)
+- [Design Prompt Generator V2 샘플](./skills/design-prompt-generator-v2/sample/)
 
 ## 기여
 
@@ -987,6 +1030,25 @@ my-skills-hub/
 MIT License
 
 ## Changelog
+
+### [1.9.0] - 2026-01-09
+
+#### Added
+- **design-prompt-generator-v2**: AI 웹 빌더용 디자인 프롬프트 생성기 🆕
+  - 7단계 계층적 프레임워크 (Domain Research → Micro-interactions)
+  - 8개 도메인별 UX 패턴 매트릭스 (Pet Services, SaaS, E-commerce 등)
+  - 7가지 감정 키워드 매트릭스 (Trust, Warmth, Energy 등)
+  - 완전한 디자인 시스템 템플릿 (10가지 컬러, 타이포, 스페이싱)
+  - 마이크로 인터랙션 정의 (5가지 카테고리)
+  - Lovable, Cursor, Bolt 등 AI 웹 빌더 지원
+  - 펫시터 서비스 샘플 HTML 포함
+
+#### Changed
+- **README.md**: design-prompt-generator-v2 스킬 추가
+  - 빠른 설치 테이블에 추가
+  - 스킬 목록(17번)에 상세 설명 추가
+  - 마켓플레이스 설치 명령어 추가
+  - 폴더 구조 및 상세 정보 링크 업데이트
 
 ### [1.8.0] - 2025-12-10
 

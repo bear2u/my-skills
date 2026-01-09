@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>펫메이트 - 믿을 수 있는 펫시터 매칭</title>
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4A90A4;
+      --primary-dark: #3A7A8E;
+      --secondary: #F5A623;
+      --accent: #7ED321;
+      --background: #FAFBFC;
+      --surface: #FFFFFF;
+      --text-primary: #2D3748;
+      --text-muted: #718096;
+      --success: #48BB78;
+      --warning: #F6AD55;
+      --error: #FC8181;
+      --border: #E2E8F0;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+      background: var(--background);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: var(--surface);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .logo i {
+      font-size: 28px;
+      color: var(--secondary);
+    }
+
+    .nav {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover {
+      color: var(--primary);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    .hero-content h1 span {
+      color: var(--primary);
+    }
+
+    .hero-content p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .hero-actions .btn {
+      padding: 14px 28px;
+      font-size: 16px;
+    }
+
+    .trust-badges {
+      display: flex;
+      gap: 24px;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .trust-badge i {
+      color: var(--accent);
+      font-size: 20px;
+    }
+
+    .hero-image {
+      position: relative;
+    }
+
+    .hero-image img {
+      width: 100%;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 100%;
+      height: 100%;
+      background: var(--secondary);
+      opacity: 0.1;
+      border-radius: var(--radius-lg);
+      z-index: -1;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: var(--surface);
+      padding: 16px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .floating-card.reviews {
+      bottom: 40px;
+      left: -40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .floating-card.reviews .stars {
+      color: var(--secondary);
+    }
+
+    .floating-card.bookings {
+      top: 40px;
+      right: -30px;
+    }
+
+    .floating-card.bookings .number {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Search Section */
+    .search-section {
+      background: var(--surface);
+      padding: 40px 24px;
+      margin: -40px 24px 40px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .form-group input,
+    .form-group select {
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      transition: border-color 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .search-btn {
+      padding: 14px 32px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .search-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Sitters Section */
+    .section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section-header p {
+      font-size: 18px;
+      color: var(--text-muted);
+    }
+
+    .sitters-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .sitter-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .sitter-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .sitter-image {
+      height: 200px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sitter-image i {
+      font-size: 80px;
+      color: white;
+      opacity: 0.8;
+    }
+
+    .sitter-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: var(--accent);
+      color: white;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .sitter-info {
+      padding: 20px;
+    }
+
+    .sitter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .sitter-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .sitter-location {
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sitter-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .sitter-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      background: var(--background);
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .sitter-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .sitter-price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .sitter-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    /* Features Section */
+    .features {
+      background: linear-gradient(135deg, var(--primary) 0%, #3A7A8E 100%);
+      padding: 80px 24px;
+      color: white;
+    }
+
+    .features-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .features .section-header h2,
+    .features .section-header p {
+      color: white;
+    }
+
+    .features .section-header p {
+      opacity: 0.8;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 32px 24px;
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s;
+    }
+
+    .feature-card:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 64px;
+      height: 64px;
+      background: white;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .feature-icon i {
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      opacity: 0.8;
+      line-height: 1.5;
+    }
+
+    /* CTA Section */
+    .cta {
+      padding: 100px 24px;
+      text-align: center;
+      background: var(--background);
+    }
+
+    .cta-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 18px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .cta .btn {
+      padding: 16px 40px;
+      font-size: 18px;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--text-primary);
+      color: white;
+      padding: 60px 24px 30px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer-brand .logo {
+      color: white;
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .footer-links h4 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 12px;
+    }
+
+    .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .social-links a {
+      color: rgba(255,255,255,0.6);
+      font-size: 20px;
+      transition: color 0.2s;
+    }
+
+    .social-links a:hover {
+      color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 60px 24px;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .trust-badges {
+        justify-content: center;
+      }
+
+      .hero-image {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+
+      .search-form {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .sitters-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        display: none;
+      }
+
+      .hero-content h1 {
+        font-size: 36px;
+      }
+
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+
+      .sitters-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .floating-card {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <i class="ri-heart-pulse-fill"></i>
+        펫메이트
+      </a>
+      <nav class="nav">
+        <a href="#">펫시터 찾기</a>
+        <a href="#">이용방법</a>
+        <a href="#">후기</a>
+        <a href="#">펫시터 되기</a>
+        <button class="btn btn-outline">로그인</button>
+        <button class="btn btn-primary">시작하기</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>우리 아이를 위한<br><span>믿을 수 있는 펫시터</span></h1>
+      <p>검증된 펫시터와 함께하면 외출이 편해집니다.<br>실시간 케어 리포트로 안심하고 맡기세요.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary">펫시터 찾기</button>
+        <button class="btn btn-outline">펫시터 지원하기</button>
+      </div>
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <i class="ri-shield-check-fill"></i>
+          <span>신원 인증 완료</span>
+        </div>
+        <div class="trust-badge">
+          <i class="ri-insurance-fill"></i>
+          <span>펫 보험 가입</span>
+        </div>
+        <div class="trust-badge">
+          <i class="ri-customer-service-2-fill"></i>
+          <span>24시간 고객지원</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div style="width: 100%; height: 400px; background: linear-gradient(135deg, #FFE4C9 0%, #FFD4A8 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+        <i class="ri-user-heart-fill" style="font-size: 120px; color: var(--primary); opacity: 0.6;"></i>
+      </div>
+      <div class="floating-card reviews">
+        <div class="stars">
+          <i class="ri-star-fill"></i>
+          <i class="ri-star-fill"></i>
+          <i class="ri-star-fill"></i>
+          <i class="ri-star-fill"></i>
+          <i class="ri-star-fill"></i>
+        </div>
+        <div>
+          <strong>4.9</strong>
+          <span style="color: var(--text-muted); font-size: 14px;">평균 별점</span>
+        </div>
+      </div>
+      <div class="floating-card bookings">
+        <div class="number">15,000+</div>
+        <div style="color: var(--text-muted); font-size: 14px;">누적 예약</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Search Section -->
+  <section class="search-section">
+    <form class="search-form">
+      <div class="form-group">
+        <label>지역</label>
+        <select>
+          <option>서울 전체</option>
+          <option>강남구</option>
+          <option>서초구</option>
+          <option>송파구</option>
+          <option>마포구</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>펫 종류</label>
+        <select>
+          <option>강아지</option>
+          <option>고양이</option>
+          <option>소동물</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>날짜</label>
+        <input type="date" value="2025-01-15">
+      </div>
+      <button type="submit" class="search-btn">
+        <i class="ri-search-line"></i>
+        검색하기
+      </button>
+    </form>
+  </section>
+
+  <!-- Sitters Section -->
+  <section class="section">
+    <div class="section-header">
+      <h2>인기 펫시터</h2>
+      <p>리뷰가 좋은 검증된 펫시터를 만나보세요</p>
+    </div>
+    <div class="sitters-grid">
+      <!-- Sitter Card 1 -->
+      <div class="sitter-card">
+        <div class="sitter-image">
+          <i class="ri-user-smile-fill"></i>
+          <span class="sitter-badge">슈퍼시터</span>
+        </div>
+        <div class="sitter-info">
+          <div class="sitter-header">
+            <div>
+              <div class="sitter-name">김수연</div>
+              <div class="sitter-location">
+                <i class="ri-map-pin-line"></i>
+                강남구 역삼동
+              </div>
+            </div>
+            <div class="sitter-rating">
+              <i class="ri-star-fill"></i>
+              4.9
+            </div>
+          </div>
+          <div class="sitter-tags">
+            <span class="tag">강아지 전문</span>
+            <span class="tag">10년 경력</span>
+            <span class="tag">응급처치 가능</span>
+          </div>
+          <div class="sitter-footer">
+            <div class="sitter-price">25,000원 <span>/ 1시간</span></div>
+            <button class="btn btn-primary">예약하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sitter Card 2 -->
+      <div class="sitter-card">
+        <div class="sitter-image" style="background: linear-gradient(135deg, #7ED321, #5CB314);">
+          <i class="ri-user-smile-fill"></i>
+        </div>
+        <div class="sitter-info">
+          <div class="sitter-header">
+            <div>
+              <div class="sitter-name">박지훈</div>
+              <div class="sitter-location">
+                <i class="ri-map-pin-line"></i>
+                서초구 반포동
+              </div>
+            </div>
+            <div class="sitter-rating">
+              <i class="ri-star-fill"></i>
+              4.8
+            </div>
+          </div>
+          <div class="sitter-tags">
+            <span class="tag">고양이 전문</span>
+            <span class="tag">수의사 출신</span>
+          </div>
+          <div class="sitter-footer">
+            <div class="sitter-price">30,000원 <span>/ 1시간</span></div>
+            <button class="btn btn-primary">예약하기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sitter Card 3 -->
+      <div class="sitter-card">
+        <div class="sitter-image" style="background: linear-gradient(135deg, #F5A623, #E09612);">
+          <i class="ri-user-smile-fill"></i>
+          <span class="sitter-badge">슈퍼시터</span>
+        </div>
+        <div class="sitter-info">
+          <div class="sitter-header">
+            <div>
+              <div class="sitter-name">이하늘</div>
+              <div class="sitter-location">
+                <i class="ri-map-pin-line"></i>
+                송파구 잠실동
+              </div>
+            </div>
+            <div class="sitter-rating">
+              <i class="ri-star-fill"></i>
+              5.0
+            </div>
+          </div>
+          <div class="sitter-tags">
+            <span class="tag">강아지·고양이</span>
+            <span class="tag">야간 가능</span>
+            <span class="tag">픽업 가능</span>
+          </div>
+          <div class="sitter-footer">
+            <div class="sitter-price">28,000원 <span>/ 1시간</span></div>
+            <button class="btn btn-primary">예약하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="features-inner">
+      <div class="section-header">
+        <h2>왜 펫메이트인가요?</h2>
+        <p>안심하고 맡길 수 있는 4가지 이유</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="ri-shield-user-fill"></i>
+          </div>
+          <h3>철저한 신원 검증</h3>
+          <p>범죄이력 조회, 신분증 인증,<br>대면 인터뷰 3단계 검증</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="ri-camera-fill"></i>
+          </div>
+          <h3>실시간 케어 리포트</h3>
+          <p>사진과 함께 전달되는<br>실시간 케어 현황</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="ri-money-dollar-circle-fill"></i>
+          </div>
+          <h3>안전한 결제</h3>
+          <p>서비스 완료 후 정산<br>100% 환불 보장</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="ri-heart-add-fill"></i>
+          </div>
+          <h3>펫 보험 적용</h3>
+          <p>케어 중 발생하는 사고<br>최대 1천만원 보장</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="cta-inner">
+      <h2>지금 바로 시작하세요</h2>
+      <p>회원가입 후 첫 예약 시 20% 할인 쿠폰을 드립니다</p>
+      <button class="btn btn-primary">무료로 시작하기</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <i class="ri-heart-pulse-fill"></i>
+          펫메이트
+        </a>
+        <p>믿을 수 있는 펫시터 매칭 서비스.<br>소중한 반려동물을 안심하고 맡기세요.</p>
+      </div>
+      <div class="footer-links">
+        <h4>서비스</h4>
+        <ul>
+          <li><a href="#">펫시터 찾기</a></li>
+          <li><a href="#">펫시터 되기</a></li>
+          <li><a href="#">이용 요금</a></li>
+          <li><a href="#">자주 묻는 질문</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>회사</h4>
+        <ul>
+          <li><a href="#">회사 소개</a></li>
+          <li><a href="#">채용</a></li>
+          <li><a href="#">블로그</a></li>
+          <li><a href="#">제휴 문의</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>고객지원</h4>
+        <ul>
+          <li><a href="#">고객센터</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">환불 정책</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 펫메이트. All rights reserved.</span>
+      <div class="social-links">
+        <a href="#"><i class="ri-instagram-line"></i></a>
+        <a href="#"><i class="ri-facebook-circle-line"></i></a>
+        <a href="#"><i class="ri-youtube-line"></i></a>
+        <a href="#"><i class="ri-kakao-talk-fill"></i></a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
