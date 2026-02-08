@@ -774,35 +774,34 @@ DuckDuckGo 검색 엔진을 활용한 텍스트, 뉴스, 이미지 검색 스킬
 - 특정 지역 기준 결과
 
 **사용 예시:**
-```bash
+```
 # 텍스트 검색
-python3 ~/.claude/skills/web-search/scripts/search.py -q "Claude Code" -t text -n 5
+"Claude Code Anthropic 검색해줘"
+"React 19 새로운 기능 찾아줘"
 
-# 한국 뉴스 검색 (최근 1주)
-python3 ~/.claude/skills/web-search/scripts/search.py -q "AI 인공지능" -t news -n 10 -r kr-kr -p w
+# 뉴스 검색
+"AI 인공지능 최근 뉴스 검색해줘"
+"한국 스타트업 뉴스 이번 주 것만 보여줘"
 
 # 이미지 검색
-python3 ~/.claude/skills/web-search/scripts/search.py -q "modern web design" -t images -n 5
+"modern web design 이미지 검색해줘"
+"미니멀 로고 디자인 사진 찾아줘"
+
+# 지역/기간 필터
+"일본에서 인기있는 앱 검색해줘"
+"최근 한 달간 Flutter 관련 뉴스 찾아줘"
+
+# 검색 연산자 활용
+"site:github.com Claude Code 검색해줘"
+"filetype:pdf 머신러닝 튜토리얼 찾아줘"
 ```
 
-**파라미터:**
-| 파라미터 | 필수 | 기본값 | 설명 |
-|----------|------|--------|------|
-| `-q` | Yes | - | 검색 키워드 |
-| `-t` | No | text | text, news, images |
-| `-n` | No | 5 | 최대 결과 수 |
-| `-r` | No | wt-wt | 지역 코드 |
-| `-s` | No | moderate | SafeSearch |
-| `-p` | No | None | 기간: d(일), w(주), m(월), y(년) |
-
-**주요 지역 코드:**
-- 전세계: `wt-wt` | 한국: `kr-kr` | 미국: `us-en` | 일본: `jp-jp` | 영국: `uk-en`
-
 **사용 시나리오:**
-- 빌트인 WebSearch가 제한적일 때
-- 특정 지역 기준 검색 결과가 필요할 때
-- 뉴스나 이미지 전용 검색
-- 검색 결과를 JSON으로 프로그래밍적 처리
+- 빌트인 WebSearch가 제한적일 때 (US 외 지역)
+- 특정 지역(한국, 일본 등) 기준 검색 결과가 필요할 때
+- 뉴스나 이미지 전용 검색이 필요할 때
+- 시간 범위(일/주/월/년)를 세밀하게 지정할 때
+- 검색 결과를 JSON으로 저장하거나 프로그래밍적으로 처리할 때
 
 ### 18. [Gemini Logo Remover](./plugins/skills/gemini-logo-remover/) 🆕
 OpenCV inpainting을 사용하여 AI 생성 이미지에서 Gemini 로고 및 워터마크를 제거하는 스킬입니다.
