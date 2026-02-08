@@ -88,4 +88,4 @@ query에 포함하여 사용:
 
 - **Rate Limit**: 잠시 후 재시도하거나 결과 수를 줄임
 - **Timeout**: 네트워크 확인 후 재시도
-- **패키지 미설치**: 스크립트가 자동 설치 시도. 실패 시 `pip install -U duckduckgo-search` 수동 실행
+- **패키지 미설치**: 스크립트가 자동 설치 시도. 실패 시 `pip install -U ddgs` 수동 실행

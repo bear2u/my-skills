@@ -5,23 +5,39 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 
 
 def ensure_dependency():
     try:
-        import duckduckgo_search  # noqa: F401
+        import ddgs  # noqa: F401
     except ImportError:
-        print("Installing duckduckgo-search...", file=sys.stderr)
-        subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "-U", "duckduckgo-search"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-        )
+        try:
+            import duckduckgo_search  # noqa: F401
+        except ImportError:
+            print("Installing ddgs...", file=sys.stderr)
+            cmd = [sys.executable, "-m", "pip", "install", "-U", "ddgs"]
+            try:
+                subprocess.check_call(
+                    cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                )
+            except subprocess.CalledProcessError:
+                subprocess.check_call(
+                    cmd + ["--break-system-packages"],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                )
+
+
+def _get_ddgs():
+    try:
+        from ddgs import DDGS
+    except ImportError:
+        from duckduckgo_search import DDGS
+    return DDGS()
 
 
 def search_text(query, region, safesearch, timelimit, max_results):
-    from duckduckgo_search import DDGS
-    return list(DDGS().text(
+    return list(_get_ddgs().text(
         keywords=query,
         region=region,
         safesearch=safesearch,
@@ -31,8 +47,7 @@ def search_text(query, region, safesearch, timelimit, max_results):
 
 
 def search_news(query, region, safesearch, timelimit, max_results):
-    from duckduckgo_search import DDGS
-    return list(DDGS().news(
+    return list(_get_ddgs().news(
         keywords=query,
         region=region,
         safesearch=safesearch,
@@ -42,8 +57,7 @@ def search_news(query, region, safesearch, timelimit, max_results):
 
 
 def search_images(query, region, safesearch, max_results):
-    from duckduckgo_search import DDGS
-    return list(DDGS().images(
+    return list(_get_ddgs().images(
         keywords=query,
         region=region,
         safesearch=safesearch,
@@ -81,40 +95,49 @@ def main():
 
     ensure_dependency()
 
-    try:
-        if args.type == "text":
-            results = search_text(
-                args.query, args.region, args.safesearch,
-                args.period, args.max_results,
-            )
-        elif args.type == "news":
-            results = search_news(
-                args.query, args.region, args.safesearch,
-                args.period, args.max_results,
-            )
-        elif args.type == "images":
-            results = search_images(
-                args.query, args.region, args.safesearch,
-                args.max_results,
-            )
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            if args.type == "text":
+                results = search_text(
+                    args.query, args.region, args.safesearch,
+                    args.period, args.max_results,
+                )
+            elif args.type == "news":
+                results = search_news(
+                    args.query, args.region, args.safesearch,
+                    args.period, args.max_results,
+                )
+            elif args.type == "images":
+                results = search_images(
+                    args.query, args.region, args.safesearch,
+                    args.max_results,
+                )
 
-        output = {
-            "query": args.query,
-            "type": args.type,
-            "region": args.region,
-            "result_count": len(results),
-            "results": results,
-        }
-        print(json.dumps(output, ensure_ascii=False, indent=2))
+            output = {
+                "query": args.query,
+                "type": args.type,
+                "region": args.region,
+                "result_count": len(results),
+                "results": results,
+            }
+            print(json.dumps(output, ensure_ascii=False, indent=2))
+            return
 
-    except Exception as e:
-        error_output = {
-            "error": True,
-            "error_type": type(e).__name__,
-            "message": str(e),
-        }
-        print(json.dumps(error_output, ensure_ascii=False, indent=2), file=sys.stderr)
-        sys.exit(1)
+        except Exception as e:
+            if "Ratelimit" in str(e) and attempt < max_retries - 1:
+                wait = (attempt + 1) * 2
+                print(f"Rate limit hit, retrying in {wait}s... ({attempt + 1}/{max_retries})", file=sys.stderr)
+                time.sleep(wait)
+                continue
+
+            error_output = {
+                "error": True,
+                "error_type": type(e).__name__,
+                "message": str(e),
+            }
+            print(json.dumps(error_output, ensure_ascii=False, indent=2), file=sys.stderr)
+            sys.exit(1)
 
 
 if __name__ == "__main__":
